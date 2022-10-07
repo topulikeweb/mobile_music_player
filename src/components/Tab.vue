@@ -8,7 +8,9 @@
         <FindSong/>
       </el-tab-pane>
 
-        <el-tab-pane label="推荐歌单">Config</el-tab-pane>
+      <el-tab-pane label="推荐歌单">
+        <RePlayList/>
+      </el-tab-pane>
       <el-tab-pane label="最新音乐">Role</el-tab-pane>
       <el-tab-pane label="最新MV">Task</el-tab-pane>
     </el-tabs>
@@ -18,10 +20,12 @@
 
 <script>
 import FindSong from '@/components/FindSong'
+import RePlayList from '@/components/RePlayList'
 
 export default {
   name: "MyTab",
   components: {
+    RePlayList,
     FindSong
   },
   setup () {
