@@ -1,9 +1,9 @@
 <template>
   <!--  tag标签-->
   <div class="el-tabs">
-    <el-tabs type="card" id="el-tabs">
+    <el-tabs type="card" id="el-tabs" v-model="activetab">
 
-      <el-tab-pane label="发现音乐" name="FindMusic">
+      <el-tab-pane label="发现音乐" name="发现音乐">
         <!--发现音乐组件-->
         <FindSong/>
       </el-tab-pane>
@@ -21,6 +21,7 @@
 <script>
 import FindSong from '@/components/FindSong'
 import RePlayList from '@/components/RePlayList'
+import { ref } from 'vue'
 
 export default {
   name: "MyTab",
@@ -29,7 +30,10 @@ export default {
     FindSong
   },
   setup () {
-
+    let activetab = ref('发现音乐')
+    return {
+      activetab
+    }
   }
 }
 </script>

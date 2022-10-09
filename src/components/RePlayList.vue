@@ -39,6 +39,9 @@
       <span class="demonstration">{{ item.name }}</span>
     </div>
   </div>
+  <!--  分页按钮-->
+  <el-pagination background layout="prev, pager, next" :total="1000"
+                 @current-change="toPageFn" :current-page="ListData.Page"/><!--c...p是高亮选中的页数标签-->
 </template>
 
 <script>
@@ -51,16 +54,18 @@ export default {
     let outImg = ref()
     let ListData = reactive({
       limit: 6,
-      // offset: '',
+      Page: 1,// 页数
       cat: '',
     })
-    let PlayList = ref()
-    let activetab = ref('全部')
+    let PlayList = ref()// 获取的歌单数据
+    let activetab = ref('全部') // 默认选中的tab标签
 
     // elementPlusTabs标签上的属性，切换标签的时候就会调用
     function handleClick (name) {
       ListData.cat = name// 先给cat赋值，告诉类别
       // console.log(ListData.cat)
+      // ListData.Page = 1
+      toPageFn(1)
       getListdataFn() // 进行歌单的请求
     }
 
@@ -74,6 +79,7 @@ export default {
       }
     }
 
+    // 获取歌曲列表的数据请求
     function getListdataFn () {
       getListDateAPI(ListData).then(res => {
         PlayList.value = res.data.playlists
@@ -84,6 +90,8 @@ export default {
     }
 
     getListdataFn()//初始化的时候就调用一次
+    getoutImgFn()
+
     // // async function getListDataFn () {
     // //   const { data } = await getListDateAPI(ListData)
     // //   if (data.status !== 0) {
@@ -93,15 +101,21 @@ export default {
     // //     console.log(111,data)
     // //   }
     // }
+    function toPageFn (page) {
+      ListData.Page = page// page是新的当前页
+      getListdataFn()
+    }
 
-    getoutImgFn()
+
     return {
       handleClick,
       outImg,
       ListData,
       PlayList,
       activetab,
-      getListdataFn
+      getListdataFn,
+      toPageFn,
+      currentPage
       // getListDataFn
     }
   }
