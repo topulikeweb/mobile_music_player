@@ -57,7 +57,7 @@ export default {
       Page: 1,// 页数
       cat: '',
     })
-    let PlayList = ref()// 获取的歌单数据
+    let PlayList = ref()// 获取的歌单总数据
     let activetab = ref('全部') // 默认选中的tab标签
     let currentPage = ref()
 
