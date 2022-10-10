@@ -23,7 +23,6 @@
       </el-tab-pane>
       <el-tab-pane label="影视原声" name="影视原声"
                    @click="ListData.tag='影视原声'">
-        影视原声
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -41,7 +40,8 @@
   </div>
   <!--  分页按钮-->
   <el-pagination background layout="prev, pager, next" :total="1000"
-                 @current-change="toPageFn" :current-page="ListData.Page"/><!--c...p是高亮选中的页数标签-->
+                 @current-change="toPageFn" :current-page="ListData.Page" style="color: #dd001b"/>
+  <!--c...p是高亮选中的页数标签-->
 </template>
 
 <script>
@@ -59,6 +59,7 @@ export default {
     })
     let PlayList = ref()// 获取的歌单数据
     let activetab = ref('全部') // 默认选中的tab标签
+    let currentPage = ref()
 
     // elementPlusTabs标签上的属性，切换标签的时候就会调用
     function handleClick (name) {
@@ -74,7 +75,7 @@ export default {
       if (data.code !== 200) {
         this.$message.error('获取封面失败')
       } else {
-        outImg.value = data.playlists[0].coverImgUrl// 只取第一张当封面
+        outImg.value = data.playlists[ListData.Page - 1].coverImgUrl// 只取第一张当封面
         // console.log(outImg)
       }
     }
@@ -104,6 +105,7 @@ export default {
     function toPageFn (page) {
       ListData.Page = page// page是新的当前页
       getListdataFn()
+      getoutImgFn()
     }
 
 
