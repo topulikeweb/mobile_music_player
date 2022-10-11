@@ -1,7 +1,7 @@
 <template>
   <!--  选择分类-->
   <el-tabs v-model="activeName" class="demo-tabs"
-           @tab-change="handleClick(SongList.id)"
+           @tab-change="handleClick"
            style="margin-left: 40px">
     <el-tab-pane label="全部"></el-tab-pane>
     <el-tab-pane label="华语" :name="7"></el-tab-pane>
@@ -42,7 +42,7 @@ export default {
     let SongList = ref()// 请求到的歌曲
     let url = ref()// 音乐的地址
     let id = ref()// 歌曲id存放
-
+    let activeName=ref('全部')// 默认tab
 
     function getNewsSongsFn () {
       getNewsSongsAPI(type.value).then(resolve => {
@@ -60,8 +60,9 @@ export default {
     // tabs变化的时候调用
     function handleClick (name) {
       type.value = name
-      // console.log(type)
-      getNewsSongsFn()
+      // console.log(name)
+      // console.log(111,type.value)
+      getNewsSongsFn(type.value)
     }
 
     // 转换时间的格式
@@ -72,7 +73,7 @@ export default {
         let min = parseInt(times / 1000 / 60)
         let second = parseInt(times / 1000 % 60)
         min = min < 10 ? '0' + min : min
-        console.log(min)
+        // console.log(min)
         second = second < 10 ? '0' + second : second
         SongList.value[i].duration = `${min}:${second}`
       }
@@ -81,10 +82,11 @@ export default {
     function PlayMusic (item) {
       // console.log(store.state.musicUrl)
       id.value = item.privilege.id
-      console.log(id)
+      // alert(111)
+      // console.log(id)
       getMusicUrlAPI(id.value).then(res => {
         store.state.musicUrl=res.data.data[0].url
-        console.log(store.state.musicUrl)
+        // console.log(store.state.musicUrl)
       }).catch(err=>{
         console.log(err)
       })
@@ -96,7 +98,8 @@ export default {
       type,
       SongList,
       PlayMusic,
-      id
+      id,
+      activeName
     }
   }
 }

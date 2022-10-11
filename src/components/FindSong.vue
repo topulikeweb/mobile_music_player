@@ -7,7 +7,8 @@
   <!--  请求出来的推荐歌曲列表-->
   <h2 style="padding-left: 8px">推荐歌单</h2>
   <div class="demo-image__placeholder">
-    <div class="block" v-for="(item,index) in PlayList" :key="index">
+    <div class="block" v-for="(item,index) in PlayList" :key="index"
+         @click="toPlayList(item.id)">
       <el-image :src="item.picUrl">
         <template #placeholder>
           <div class="image-slot">Loading<span class="dot">...</span></div>
@@ -44,12 +45,15 @@
 
 <script>
 import { ref } from 'vue'
+import router from '@/router'
 import {
   getimgAPI,
   getNewMVAPI,
   getNewPlayListAPI,
-  getPlayListAPI
+  getPlayListAPI, getPlayListresAPI
 } from '@/api'
+import { ElNotification } from 'element-plus'
+import store from '@/store'
 
 export default {
   name: "MyTab",
@@ -58,7 +62,9 @@ export default {
     let PlayList = ref()// 存放请求出来的推荐歌曲
     let NewPlayList = ref()// 存放最新音乐
     let MVs = ref()// 存放最新MV
+    let resPlayList = ref() //存放点击专辑请求到的歌曲
 
+// 获取轮播图图片
     async function getImgFn () {
       const { data } = await getimgAPI()
       if (data.code !== 200) {
@@ -69,6 +75,7 @@ export default {
       }
     }
 
+// 获取推荐歌单
     async function getPlayListFn () {
       const { data } = await getPlayListAPI()
       if (data.code !== 200) {
@@ -81,6 +88,7 @@ export default {
       }
     }
 
+// 获取最新歌单
     async function getnewPlayList () {
       const { data } = await getNewPlayListAPI()
       if (data.code !== 200) {
@@ -91,6 +99,7 @@ export default {
       }
     }
 
+// 获取推荐mv
     async function getNewMVFn () {
       const { data } = await getNewMVAPI()
       if (data.code !== 200) {
@@ -101,15 +110,50 @@ export default {
       }
     }
 
+    function toPlayList (id) {
+      store.state.id = id
+      // console.log(id)
+
+      getPlayListresAPI(id).then(res => {
+        store.state.resPlayList = res.data.playlist.tracks
+        resPlayList.value = store.state.resPlayList
+        // console.log(resPlayList.value.length)
+        // console.log(store.state.resPlayList[1].dt)
+        FormTime()
+        router.push('/PlayList')
+      }).catch(err => {
+        console.log(err)
+      })
+      // console.log(store.state.id)
+    }
+
+    function FormTime () {
+      for (let i = 0; i < resPlayList.value.length; i++) {
+        let times = store.state.resPlayList[i].dt
+        console.log(times)
+        // console.log(times)
+        let min = parseInt(times / 1000 / 60)
+        let second = parseInt(times / 1000 % 60)
+        min = min < 10 ? '0' + min : min
+        // console.log(min)
+        second = second < 10 ? '0' + second : second
+        resPlayList.value[i].dt = `${min}:${second}`
+        // console.log(111,store.state.resPlayList[i].dt)
+      }
+    }
+
     getImgFn()
     getPlayListFn()
     getnewPlayList()
     getNewMVFn()
+    // FormTime()
     return {
       banner,
       PlayList,
       NewPlayList,
-      MVs
+      MVs,
+      toPlayList,
+      resPlayList
     }
   },
 }
