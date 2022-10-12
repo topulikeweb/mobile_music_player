@@ -130,8 +130,6 @@ export default {
     function FormTime () {
       for (let i = 0; i < resPlayList.value.length; i++) {
         let times = store.state.resPlayList[i].dt
-        console.log(times)
-        // console.log(times)
         let min = parseInt(times / 1000 / 60)
         let second = parseInt(times / 1000 % 60)
         min = min < 10 ? '0' + min : min
