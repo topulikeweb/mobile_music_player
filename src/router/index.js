@@ -7,9 +7,14 @@ const routes = [{
   name: 'PlayList',
   component: () => import('@/views/PlayList')
 },
-  { path: '/mv',
+  {
+    path: '/mv',
     name: 'mv',
-    component:()=>import('@/views/mv')
+    component: () => import('@/views/mv')
+  }, {
+    path: '/Result',
+    name: 'Result',
+    component: () => import('@/views/Result')
   }
 ];
 const router = createRouter({

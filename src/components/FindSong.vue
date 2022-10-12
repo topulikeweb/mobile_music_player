@@ -20,7 +20,8 @@
 
   <h2>最新歌单</h2>
   <div class="demo-image__placeholder">
-    <div class="block" v-for="(item,index) in NewPlayList" :key="index">
+    <div class="block" v-for="(item,index) in NewPlayList" :key="index"
+         @click="toPlayList(item.id)">
       <el-image :src="item.picUrl">
         <template #placeholder>
           <div class="image-slot">Loading<span class="dot">...</span></div>
@@ -32,7 +33,8 @@
 
   <h2>最新MV</h2>
   <div class="demo-image__placeholder">
-    <div class="block" v-for="(item,index) in MVs" :key="index">
+    <div class="block" v-for="(item,index) in MVs" :key="index"
+         @click="toMVs(item.id)">
       <el-image :src="item.picUrl">
         <template #placeholder>
           <div class="image-slot">Loading<span class="dot">...</span></div>
@@ -47,7 +49,7 @@
 import { ref } from 'vue'
 import router from '@/router'
 import {
-  getimgAPI,
+  getimgAPI, getMVurlAPI,
   getNewMVAPI,
   getNewPlayListAPI,
   getPlayListAPI, getPlayListresAPI
@@ -140,6 +142,18 @@ export default {
       }
     }
 
+    // 播放MV
+    function toMVs (id) {
+      router.push('/mv')
+      // console.log(store.state.MVurl)
+      getMVurlAPI(id).then(res => {
+        store.state.MVurl = res.data.data.url
+      }).catch(err => {
+        console.log(err)
+      })
+
+    }
+
     getImgFn()
     getPlayListFn()
     getnewPlayList()
@@ -151,7 +165,8 @@ export default {
       NewPlayList,
       MVs,
       toPlayList,
-      resPlayList
+      resPlayList,
+      toMVs
     }
   },
 }
