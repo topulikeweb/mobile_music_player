@@ -10,7 +10,7 @@
            @blur="Find=false"
            @focus="Find=true"
     >
-    <div class="center">个人中心</div>
+    <div class="center" @click="tocenter">个人中心</div>
   </div>
   <!-- 匹配结果展示部分-->
   <div class="ResBox" v-if="Find">
@@ -20,11 +20,18 @@
       </li>
     </ul>
   </div>
+  <!--  用户中心页面-->
+  <div class="mycenter" v-if="center">
+    <div class="avater"><img :src="UserInfo.avatarUrl"></div>
+    <div class="username">{{ UserInfo.nickname }}</div>
+    <div class="phone">等级：{{ UserInfo.level }}</div>
+    <div class="createtime">创建时间：{{ UserInfo.creatTime }}</div>
+  </div>
 </template>
 
 <script>
-import { ref } from 'vue'
-import { getMyresult } from '@/api'
+import { reactive, ref } from 'vue'
+import { getMyresult, loginAPI, userDetil } from '@/api'
 import store from '@/store'
 import router from '@/router'
 
@@ -41,6 +48,15 @@ export default {
     // }
     let myResult = store.state.resPlayList = ref()
     let Find = ref('false') // 控制匹配框是否出现
+    let userid = store.state.uid = ref()
+    let center = store.state.usercenter = ref()
+    let UserInfo = reactive({
+      nickname: '',
+      creatTime: '',
+      avatarUrl: '',
+      level: ''
+    })
+
     // let isdisapper = store.state.isdisapper = ref()
 
     function toResult (Result) {
@@ -83,8 +99,36 @@ export default {
       }
     }
 
+// 点击登录按钮根据token进行切换
     function login () {
-      store.state.isdisapper=!store.state.isdisapper
+      if (store.state.token) {
+        if (confirm('你已经登陆了')) {
+          store.state.isdisapper = !store.state.isdisapper
+        }
+      } else {
+        alert('你还没有登陆')
+      }
+      // loginAPI(phone.value,password)
+    }
+
+// 点击‘个人中心’展示个人中心页面
+    function tocenter () {
+      store.state.usercenter = !store.state.usercenter
+      getuserDetil()// 获取用户信息
+    }
+
+// 获取用户信息
+    function getuserDetil () {
+      console.log(userid.value)
+      userDetil(userid.value).then(res => {
+        UserInfo.nickname = res.data.profile.nickname
+        UserInfo.avatarUrl = res.data.profile.avatarUrl
+        UserInfo.creatTime = res.data.profile.createTime
+        UserInfo.level = res.data.level
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
     }
 
     return {
@@ -93,8 +137,11 @@ export default {
       ToResultplace,
       myResult,
       Find,
+      tocenter,
       // toTheResult
       login,
+      center,
+      UserInfo
     }
   }
 }
@@ -129,7 +176,8 @@ input {
 
 .login {
   font-size: 18px;
-  margin-left: 10px;
+  margin-left: 10px;;
+  height: 20px;
 }
 
 .center {
@@ -161,5 +209,10 @@ input {
 .ResBox ul li:hover {
   background-color: silver;
   font-size: 21px;
+}
+
+.login:hover {
+  font-size: 22px;
+  color: #d3dce6;
 }
 </style>

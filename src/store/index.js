@@ -12,6 +12,9 @@ export default createStore({
     resMyList: '',
     musicUrl: 'http://m7.music.126.net/20200303182550/8aa5971b1630d1527a922ccd2b97f392/ymusic/035d/0109/520e/478f86cc9f6c6539f7c8ed3e06c1bf8e.mp3',
     MVurl: '',// 音乐播放地址
-    isdisapper:'true'// 点击登录按钮其他组件消失
+    isdisapper: 'true',// 点击登录按钮其他组件消失
+    token: '',// 登录令牌
+    usercenter: 'true',
+    uid: ''// 登陆的用户id
   }
 })

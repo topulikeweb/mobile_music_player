@@ -137,11 +137,21 @@ export const getMyresult = (keywords) => {
 // 用户手机登录
 export const loginAPI = (phone, password) => {
   return axios({
-    method: 'GET',
+    method: 'POST',
     url: '/login/cellphone',
     params: {
       phone,
       password
+    }
+  })
+}
+// 获取登录的用户的信息
+export const userDetil = (uid) => {
+  return axios({
+    method: 'GET',
+    url: '/user/detail',
+    params: {
+      uid
     }
   })
 }
