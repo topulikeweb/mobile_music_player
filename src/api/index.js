@@ -1,4 +1,7 @@
 import axios from '@/utils/request'
+import cookie from 'cookie'
+
+
 // 请求轮播图图片
 export const getimgAPI = () => {
   return axios({
@@ -155,3 +158,24 @@ export const userDetil = (uid) => {
     }
   })
 }
+// 获取用户喜欢歌曲列表的所有id
+export const userLikeListAPI = (uid) => {
+  return axios({
+    method: 'POST',
+    url: '/likelist',
+    params: {
+      uid
+    }
+  })
+}
+// 根据音乐的id找到音乐详情
+export const getMusicDetil = (ids) => {
+  return axios({
+    method:'GET',
+    url:'/song/detail',
+    params:{
+      ids
+    }
+  })
+}
+

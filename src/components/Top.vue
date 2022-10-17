@@ -56,6 +56,7 @@ export default {
       avatarUrl: '',
       level: ''
     })
+    let token = ref()
 
     // let isdisapper = store.state.isdisapper = ref()
 
@@ -101,7 +102,8 @@ export default {
 
 // 点击登录按钮根据token进行切换
     function login () {
-      if (store.state.token) {
+      token.value = localStorage.getItem('token')
+      if (token.value) {
         if (confirm('你已经登陆了')) {
           store.state.isdisapper = !store.state.isdisapper
         }
@@ -113,14 +115,18 @@ export default {
 
 // 点击‘个人中心’展示个人中心页面
     function tocenter () {
-      store.state.usercenter = !store.state.usercenter
-      getuserDetil()// 获取用户信息
+      if (!localStorage.getItem('token')) {
+        alert('您还没有登录')
+      } else {
+        store.state.usercenter = !store.state.usercenter
+        getuserDetil()// 获取用户信息
+      }
     }
 
 // 获取用户信息
     function getuserDetil () {
       console.log(userid.value)
-      userDetil(userid.value).then(res => {
+      userDetil(localStorage.getItem('uid')).then(res => {
         UserInfo.nickname = res.data.profile.nickname
         UserInfo.avatarUrl = res.data.profile.avatarUrl
         UserInfo.creatTime = res.data.profile.createTime
@@ -141,7 +147,8 @@ export default {
       // toTheResult
       login,
       center,
-      UserInfo
+      UserInfo,
+      token
     }
   }
 }

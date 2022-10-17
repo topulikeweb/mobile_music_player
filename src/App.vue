@@ -85,13 +85,18 @@ export default {
      */
     function LoginIn () {
       loginAPI(phone.value, password.value).then(res => {
-        if (res.data.code == 200) {
+        if (res.data.code === 200) {
           store.state.token = res.data.token
+          localStorage.removeItem('token')
+          localStorage.setItem('token', store.state.token)// 将token存入本地
+          // localStorage.getItem('token') = res.data.token
           Alert1.value = true
           Alert2.value = false
           isapper.value = true// 让登录消失，页面展示
-          console.log(1111, res)
+          // console.log(1111, res)
           store.state.uid = res.data.account.id
+          console.log(store.state.uid)
+          localStorage.setItem('uid', store.state.uid)// 将uid存入本地
         } else {
           Alert1.value = false
           Alert2.value = true
@@ -101,7 +106,13 @@ export default {
       })
     }
 
+    function istoken () {
+      if (localStorage.getItem('token')) {
+        isapper.value = true
+      }
+    }
 
+    istoken()
     return {
       isapper,
       password,
@@ -131,6 +142,8 @@ html {
 
 .div {
   height: 210px;
+  position: relative;
+  bottom: 0px;
 }
 
 .face {
@@ -210,6 +223,7 @@ button {
 #el-alert {
   position: absolute;
   /*float: left;*/
+  top: 40px;
 }
 
 .mycenter {
@@ -233,7 +247,8 @@ button {
   top: 20px;
   left: 20px;
 }
-.avater img{
+
+.avater img {
   width: 100%;
   height: 100%;
 }

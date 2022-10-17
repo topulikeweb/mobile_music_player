@@ -10,7 +10,7 @@
 
       <el-tab-pane label="推荐歌单">
         <RePlayList/>
-<!--        <router-link to="/PlayList"></router-link>-->
+        <!--        <router-link to="/PlayList"></router-link>-->
       </el-tab-pane>
 
       <el-tab-pane label="最新音乐">
@@ -19,6 +19,10 @@
 
       <el-tab-pane label="最新MV">
         <MVs/>
+      </el-tab-pane>
+
+      <el-tab-pane label="我喜欢的歌曲">
+        <MyLove/>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -31,10 +35,12 @@ import RePlayList from '@/components/RePlayList'
 import { ref } from 'vue'
 import Songs from '@/components/Songs'
 import MVs from '@/components/MVs'
+import MyLove from '@/components/MyLove'
 
 export default {
   name: "MyTab",
   components: {
+    MyLove,
     MVs,
     Songs,
     RePlayList,

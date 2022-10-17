@@ -22,6 +22,7 @@ export default {
 
 <style scoped>
 .player{
+  z-index: 99999;
   position: fixed;
   bottom: 150px;
   left: 8%;
